@@ -1,26 +1,27 @@
 pipeline {
     agent any
-
     stages {
-        stage('Deploy') {
+        stage('Подготовка окружения') {
             steps {
-                echo 'Запуск развертывания через Ansible...'
+                echo 'Установка зависимостей и клонирование...'
                 dir('ansible') {
                     ansiblePlaybook(
                         playbook: 'run_playbook.yml',
+                        inventory: 'hosts',
                         tags: 'deploy',
                         colorized: true
                     )
                 }
             }
         }
-        stage('Stop') {
+        stage('Запуск приложений') {
             steps {
-                echo 'Остановка контейнеров...'
+                echo 'Запуск контейнеров через Docker Compose...'
                 dir('ansible') {
                     ansiblePlaybook(
                         playbook: 'run_playbook.yml',
-                        tags: 'stop',
+                        inventory: 'hosts',
+                        tags: 'up',
                         colorized: true
                     )
                 }
