@@ -18,7 +18,8 @@ def submit():
     data = request.get_json()
     text = data.get('text', '')
 
-    with open('data.txt', 'a', encoding='utf-8') as f:
+    # Изменено: используем /tmp/data.txt, так как этот путь не монтируется с Windows
+    with open('/tmp/data.txt', 'a', encoding='utf-8') as f:
         f.write(text + '\n')
 
     return jsonify({'status': 'ok', 'received': text})
@@ -30,7 +31,8 @@ def read_options():
 @app.route('/read', methods=['GET'])
 def read_file():
     try:
-        with open('data.txt', 'r', encoding='utf-8') as f:
+        # Изменено: используем /tmp/data.txt
+        with open('/tmp/data.txt', 'r', encoding='utf-8') as f:
             content = f.read()
     except FileNotFoundError:
         content = ''
