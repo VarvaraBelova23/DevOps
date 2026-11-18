@@ -26,17 +26,10 @@
     groups: docker
     append: yes
 
-- name: 5. Клонирование репозитория DevOps
-  git:
-    repo: 'https://github.com/VarvaraBelova23/DevOps.git'
-    dest: /home/{{ ansible_user }}/DevOps
-    version: main
-    force: yes
-
 - name: 6. Запуск контейнеров через Docker Compose
   command: docker-compose up -d --build
   args:
-    chdir: /home/{{ ansible_user }}/DevOps
+    chdir: /var/jenkins_home/workspace/DevOps-Deploy
   tags:
     - deploy
     - up
@@ -44,7 +37,7 @@
 - name: 7. Остановка контейнеров через Docker Compose
   command: docker-compose down
   args:
-    chdir: /home/{{ ansible_user }}/DevOps
+    chdir: /var/jenkins_home/workspace/DevOps-Deploy
   tags:
     - stop
     - down
