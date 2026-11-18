@@ -1,0 +1,6 @@
+---
+- name: Развертывание приложения DevOps
+  hosts: webservers
+  become: yes
+  roles:
+    - role01
